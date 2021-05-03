@@ -31,7 +31,7 @@ class FileSelect(QtWidgets.QWidget):
     layout = QtWidgets.QGridLayout()
 
     nameLabel = textWidget(
-      "Touhou Labyrinth 1 Character Save Editor\nv0.0.1", 26, True
+      "Touhou Labyrinth 1 Character Save Editor\nv1.0.0", 26, True
     )
     layout.addWidget(nameLabel, 1, 0, 1, 4)
 
