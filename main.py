@@ -373,6 +373,7 @@ class MainWidget(QtWidgets.QWidget):
       ((i, c) for i, c in enumerate(characters) if c.name == name)
     )
     character = copy.deepcopy(edited)
+    characters[i] = character
     pad = '0' if (i < 10) else ''
     paddedIndex = pad + str(i)
     with open(self.fullPath+"/C"+paddedIndex+".ngd", 'wb') as f:
