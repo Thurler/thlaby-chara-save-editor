@@ -372,7 +372,6 @@ class MainWidget(QtWidgets.QWidget):
     i, character = next(
       ((i, c) for i, c in enumerate(characters) if c.name == name)
     )
-    print(edited.level)
     character = copy.deepcopy(edited)
     pad = '0' if (i < 10) else ''
     paddedIndex = pad + str(i)
