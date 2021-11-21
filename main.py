@@ -78,7 +78,7 @@ class FileSelect(QtWidgets.QWidget):
     return True
 
 class CharaSelect(QtWidgets.QWidget):
-  def __init__(self, backFunc, charaFunc):
+  def __init__(self, backFunc, charaFunc, normalizeFunc):
     super().__init__()
     layout = QtWidgets.QGridLayout()
 
@@ -97,7 +97,11 @@ class CharaSelect(QtWidgets.QWidget):
 
     backCallback = (lambda c=False: backFunc())
     backButton = buttonWidget("Back to Save Select", backCallback)
-    layout.addWidget(backButton, 5, 3, 1, 2)
+    layout.addWidget(backButton, 5, 1, 1, 2)
+
+    normCallback = (lambda c=False: normalizeFunc())
+    normButton = buttonWidget("Normalize EXP", normCallback)
+    layout.addWidget(normButton, 5, 5, 1, 2)
 
     self.setLayout(layout)
 
@@ -352,6 +356,7 @@ class MainWidget(QtWidgets.QWidget):
     self.charaSelect = CharaSelect(
       self.loadSelectScreen,
       self.loadCharacter,
+      self.normalizeExp,
     )
     self.layout.addWidget(self.charaSelect)
 
@@ -382,6 +387,17 @@ class MainWidget(QtWidgets.QWidget):
         print("Saved successfully!")
       except OverflowError as e:
         print("Some of the stats overflowed! Please revise your settings!")
+
+  def normalizeExp(self):
+    maxExp = 0
+    for character in characters:
+      maxExp = max(maxExp, character.totalExp)
+    for character in characters:
+      if character.totalExp == 0 or character.totalExp >= maxExp:
+        continue
+      character.exp += (maxExp - character.totalExp)
+      character.totalExp = maxExp
+      self.saveOneCharacter(character.name, character)
 
 if __name__ == "__main__":
   app = QtWidgets.QApplication([])

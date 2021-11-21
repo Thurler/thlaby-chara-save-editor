@@ -18,8 +18,9 @@ def readAsInteger(f, nbytes):
   return result
 
 class Character:
-  def __init__(self, name, growths, affinities):
+  def __init__(self, name, growths, affinities, expValue):
     self.name = name
+    self.expValue = expValue
     self.filename = name
     if (name == "Meiling"): self.filename = "Meirin"
     elif (name == "Tenshi"): self.filename = "Tenko"
@@ -112,6 +113,12 @@ class Character:
   def loadSave(self, data):
     self.level = readAsInteger(data, 2)
     self.exp = readAsInteger(data, 4)
+    self.totalExp = self.exp
+    for i in range(1, self.level):
+      base = (i + 1) * 24.0
+      levelBonus = 1.0 + (i * 0.5)
+      required = int(int(base * levelBonus) * self.expValue / 100.0)
+      self.totalExp += required
     self.tp = readAsInteger(data, 1)
     multipliers = [readAsInteger(data, 2) for i in range(8)]
     self.evaMultiplier = multipliers[5]
@@ -222,201 +229,241 @@ characterArray = [
   Character(
     'Reimu',
     {'hp': 12, 'sp': 20, 'atk': 8, 'def': 6, 'mag': 9, 'mnd': 9, 'spd': 8},
-    {'fir': 110, 'cld': 106, 'wnd': 114, 'ntr': 105, 'mys': 77, 'spi': 148}
+    {'fir': 110, 'cld': 106, 'wnd': 114, 'ntr': 105, 'mys': 77, 'spi': 148},
+    90
   ),
   Character(
     'Marisa',
     {'hp': 9, 'sp': 26, 'atk': 3, 'def': 5, 'mag': 13, 'mnd': 12, 'spd': 11},
-    {'fir': 89, 'cld': 95, 'wnd': 96, 'ntr': 93, 'mys': 167, 'spi': 144}
+    {'fir': 89, 'cld': 95, 'wnd': 96, 'ntr': 93, 'mys': 167, 'spi': 144},
+    110
   ),
   Character(
     'Remilia',
     {'hp': 19, 'sp': 8, 'atk': 16, 'def': 10, 'mag': 4, 'mnd': 9, 'spd': 12},
-    {'fir': 121, 'cld': 122, 'wnd': 128, 'ntr': 125, 'mys': 96, 'spi': 77}
+    {'fir': 121, 'cld': 122, 'wnd': 128, 'ntr': 125, 'mys': 96, 'spi': 77},
+    132
   ),
   Character(
     'Sakuya',
     {'hp': 15, 'sp': 14, 'atk': 11, 'def': 8, 'mag': 5, 'mnd': 7, 'spd': 10},
-    {'fir': 110, 'cld': 110, 'wnd': 110, 'ntr': 110, 'mys': 110, 'spi': 110}
+    {'fir': 110, 'cld': 110, 'wnd': 110, 'ntr': 110, 'mys': 110, 'spi': 110},
+    104
   ),
   Character(
     'Patchouli',
     {'hp': 6, 'sp': 30, 'atk': 2, 'def': 2, 'mag': 16, 'mnd': 17, 'spd': 5},
-    {'fir': 132, 'cld': 136, 'wnd': 138, 'ntr': 134, 'mys': 173, 'spi': 102}
+    {'fir': 132, 'cld': 136, 'wnd': 138, 'ntr': 134, 'mys': 173, 'spi': 102},
+    128
   ),
   Character(
     'Chen',
     {'hp': 8, 'sp': 5, 'atk': 8, 'def': 4, 'mag': 4, 'mnd': 4, 'spd': 13},
-    {'fir': 98, 'cld': 51, 'wnd': 96, 'ntr': 97, 'mys': 105, 'spi': 103}
+    {'fir': 98, 'cld': 51, 'wnd': 96, 'ntr': 97, 'mys': 105, 'spi': 103},
+    70
   ),
   Character(
     'Meiling',
     {'hp': 17, 'sp': 6, 'atk': 7, 'def': 9, 'mag': 4, 'mnd': 6, 'spd': 7},
-    {'fir': 136, 'cld': 144, 'wnd': 138, 'ntr': 140, 'mys': 105, 'spi': 103}
+    {'fir': 136, 'cld': 144, 'wnd': 138, 'ntr': 140, 'mys': 105, 'spi': 103},
+    94
   ),
   Character(
     'Cirno',
     {'hp': 11, 'sp': 15, 'atk': 8, 'def': 5, 'mag': 8, 'mnd': 4, 'spd': 9},
-    {'fir': 35, 'cld': 176, 'wnd': 114, 'ntr': 105, 'mys': 95, 'spi': 91}
+    {'fir': 35, 'cld': 176, 'wnd': 114, 'ntr': 105, 'mys': 95, 'spi': 91},
+    84
   ),
   Character(
     'Minoriko',
     {'hp': 10, 'sp': 16, 'atk': 3, 'def': 3, 'mag': 8, 'mnd': 9, 'spd': 7},
-    {'fir': 50, 'cld': 56, 'wnd': 163, 'ntr': 196, 'mys': 100, 'spi': 104}
+    {'fir': 50, 'cld': 56, 'wnd': 163, 'ntr': 196, 'mys': 100, 'spi': 104},
+    88
   ),
   Character(
     'Youmu',
     {'hp': 16, 'sp': 5, 'atk': 12, 'def': 9, 'mag': 2, 'mnd': 2, 'spd': 7},
-    {'fir': 110, 'cld': 106, 'wnd': 114, 'ntr': 105, 'mys': 84, 'spi': 132}
+    {'fir': 110, 'cld': 106, 'wnd': 114, 'ntr': 105, 'mys': 84, 'spi': 132},
+    105
   ),
   Character(
     'Alice',
     {'hp': 12, 'sp': 22, 'atk': 6, 'def': 7, 'mag': 12, 'mnd': 10, 'spd': 8},
-    {'fir': 118, 'cld': 114, 'wnd': 117, 'ntr': 113, 'mys': 126, 'spi': 112}
+    {'fir': 118, 'cld': 114, 'wnd': 117, 'ntr': 113, 'mys': 126, 'spi': 112},
+    106
   ),
   Character(
     'Rumia',
     {'hp': 9, 'sp': 16, 'atk': 4, 'def': 5, 'mag': 9, 'mnd': 7, 'spd': 6},
-    {'fir': 96, 'cld': 102, 'wnd': 103, 'ntr': 99, 'mys': 192, 'spi': 67}
+    {'fir': 96, 'cld': 102, 'wnd': 103, 'ntr': 99, 'mys': 192, 'spi': 67},
+    86
   ),
   Character(
     'Wriggle',
     {'hp': 14, 'sp': 16, 'atk': 10, 'def': 7, 'mag': 6, 'mnd': 7, 'spd': 8},
-    {'fir': 61, 'cld': 73, 'wnd': 145, 'ntr': 157, 'mys': 110, 'spi': 109}
+    {'fir': 61, 'cld': 73, 'wnd': 145, 'ntr': 157, 'mys': 110, 'spi': 109},
+    94
   ),
   Character(
     'Yuugi',
     {'hp': 16, 'sp': 7, 'atk': 17, 'def': 12, 'mag': 1, 'mnd': 3, 'spd': 7},
-    {'fir': 138, 'cld': 72, 'wnd': 136, 'ntr': 75, 'mys': 137, 'spi': 73}
+    {'fir': 138, 'cld': 72, 'wnd': 136, 'ntr': 75, 'mys': 137, 'spi': 73},
+    115
   ),
   Character(
     'Aya',
     {'hp': 12, 'sp': 16, 'atk': 13, 'def': 7, 'mag': 6, 'mnd': 6, 'spd': 14},
-    {'fir': 102, 'cld': 104, 'wnd': 201, 'ntr': 106, 'mys': 77, 'spi': 80}
+    {'fir': 102, 'cld': 104, 'wnd': 201, 'ntr': 106, 'mys': 77, 'spi': 80},
+    108
   ),
   Character(
     'Iku',
     {'hp': 13, 'sp': 16, 'atk': 6, 'def': 6, 'mag': 11, 'mnd': 11, 'spd': 7},
-    {'fir': 114, 'cld': 112, 'wnd': 181, 'ntr': 109, 'mys': 101, 'spi': 102}
+    {'fir': 114, 'cld': 112, 'wnd': 181, 'ntr': 109, 'mys': 101, 'spi': 102},
+    104
   ),
   Character(
     'Komachi',
     {'hp': 28, 'sp': 10, 'atk': 14, 'def': 3, 'mag': 3, 'mnd': 2, 'spd': 8},
-    {'fir': 87, 'cld': 82, 'wnd': 84, 'ntr': 90, 'mys': 126, 'spi': 141}
+    {'fir': 87, 'cld': 82, 'wnd': 84, 'ntr': 90, 'mys': 126, 'spi': 141},
+    120
   ),
   Character(
     'Suwako',
     {'hp': 9, 'sp': 11, 'atk': 14, 'def': 6, 'mag': 14, 'mnd': 6, 'spd': 9},
-    {'fir': 71, 'cld': 141, 'wnd': 68, 'ntr': 142, 'mys': 102, 'spi': 98}
+    {'fir': 71, 'cld': 141, 'wnd': 68, 'ntr': 142, 'mys': 102, 'spi': 98},
+    128
   ),
   Character(
     'Sanae',
     {'hp': 10, 'sp': 21, 'atk': 4, 'def': 5, 'mag': 12, 'mnd': 8, 'spd': 7},
-    {'fir': 123, 'cld': 133, 'wnd': 101, 'ntr': 94, 'mys': 84, 'spi': 146}
+    {'fir': 123, 'cld': 133, 'wnd': 101, 'ntr': 94, 'mys': 84, 'spi': 146},
+    102
   ),
   Character(
     'Nitori',
     {'hp': 11, 'sp': 15, 'atk': 10, 'def': 5, 'mag': 4, 'mnd': 7, 'spd': 8},
-    {'fir': 75, 'cld': 169, 'wnd': 113, 'ntr': 167, 'mys': 104, 'spi': 72}
+    {'fir': 75, 'cld': 169, 'wnd': 113, 'ntr': 167, 'mys': 104, 'spi': 72},
+    98
   ),
   Character(
     'Ran',
     {'hp': 14, 'sp': 18, 'atk': 10, 'def': 8, 'mag': 13, 'mnd': 10, 'spd': 10},
-    {'fir': 173, 'cld': 66, 'wnd': 165, 'ntr': 170, 'mys': 61, 'spi': 192}
+    {'fir': 173, 'cld': 66, 'wnd': 165, 'ntr': 170, 'mys': 61, 'spi': 192},
+    116
   ),
   Character(
     'Reisen',
     {'hp': 12, 'sp': 16, 'atk': 4, 'def': 6, 'mag': 10, 'mnd': 4, 'spd': 9},
-    {'fir': 118, 'cld': 125, 'wnd': 84, 'ntr': 90, 'mys': 198, 'spi': 50}
+    {'fir': 118, 'cld': 125, 'wnd': 84, 'ntr': 90, 'mys': 198, 'spi': 50},
+    108
   ),
   Character(
     'Eirin',
     {'hp': 15, 'sp': 19, 'atk': 9, 'def': 9, 'mag': 13, 'mnd': 10, 'spd': 8},
-    {'fir': 147, 'cld': 150, 'wnd': 151, 'ntr': 145, 'mys': 101, 'spi': 168}
+    {'fir': 147, 'cld': 150, 'wnd': 151, 'ntr': 145, 'mys': 101, 'spi': 168},
+    136
   ),
   Character(
     'Tenshi',
     {'hp': 11, 'sp': 14, 'atk': 10, 'def': 12, 'mag': 6, 'mnd': 12, 'spd': 6},
-    {'fir': 118, 'cld': 125, 'wnd': 119, 'ntr': 114, 'mys': 126, 'spi': 124}
+    {'fir': 118, 'cld': 125, 'wnd': 119, 'ntr': 114, 'mys': 126, 'spi': 124},
+    110
   ),
   Character(
     'Mokou',
     {'hp': 14, 'sp': 14, 'atk': 4, 'def': 7, 'mag': 12, 'mnd': 7, 'spd': 9},
-    {'fir': 176, 'cld': 71, 'wnd': 140, 'ntr': 136, 'mys': 89, 'spi': 92}
+    {'fir': 176, 'cld': 71, 'wnd': 140, 'ntr': 136, 'mys': 89, 'spi': 92},
+    112
   ),
   Character(
     'Flandre',
     {'hp': 16, 'sp': 16, 'atk': 22, 'def': 5, 'mag': 14, 'mnd': 1, 'spd': 11},
-    {'fir': 342, 'cld': 28, 'wnd': 61, 'ntr': 54, 'mys': 90, 'spi': 46}
+    {'fir': 342, 'cld': 28, 'wnd': 61, 'ntr': 54, 'mys': 90, 'spi': 46},
+    128
   ),
   Character(
     'Rin',
     {'hp': 10, 'sp': 17, 'atk': 11, 'def': 5, 'mag': 9, 'mnd': 10, 'spd': 11},
-    {'fir': 180, 'cld': 52, 'wnd': 102, 'ntr': 60, 'mys': 99, 'spi': 160}
+    {'fir': 180, 'cld': 52, 'wnd': 102, 'ntr': 60, 'mys': 99, 'spi': 160},
+    106
   ),
   Character(
     'Kaguya',
     {'hp': 7, 'sp': 20, 'atk': 4, 'def': 6, 'mag': 14, 'mnd': 11, 'spd': 7},
-    {'fir': 149, 'cld': 156, 'wnd': 151, 'ntr': 146, 'mys': 158, 'spi': 155}
+    {'fir': 149, 'cld': 156, 'wnd': 151, 'ntr': 146, 'mys': 158, 'spi': 155},
+    118
   ),
   Character(
     'Suika',
     {'hp': 16, 'sp': 10, 'atk': 16, 'def': 6, 'mag': 6, 'mnd': 10, 'spd': 9},
-    {'fir': 69, 'cld': 165, 'wnd': 159, 'ntr': 162, 'mys': 160, 'spi': 60}
+    {'fir': 69, 'cld': 165, 'wnd': 159, 'ntr': 162, 'mys': 160, 'spi': 60},
+    130
   ),
   Character(
     'Yuyuko',
     {'hp': 14, 'sp': 17, 'atk': 4, 'def': 5, 'mag': 12, 'mnd': 13, 'spd': 6},
-    {'fir': 73, 'cld': 168, 'wnd': 75, 'ntr': 151, 'mys': 99, 'spi': 234}
+    {'fir': 73, 'cld': 168, 'wnd': 75, 'ntr': 151, 'mys': 99, 'spi': 234},
+    136
   ),
   Character(
     'Yukari',
     {'hp': 14, 'sp': 21, 'atk': 6, 'def': 9, 'mag': 13, 'mnd': 12, 'spd': 7},
-    {'fir': 87, 'cld': 144, 'wnd': 149, 'ntr': 143, 'mys': 89, 'spi': 181}
+    {'fir': 87, 'cld': 144, 'wnd': 149, 'ntr': 143, 'mys': 89, 'spi': 181},
+    140
   ),
   Character(
     'Rinnosuke',
     {'hp': 16, 'sp': 16, 'atk': 16, 'def': 10, 'mag': 12, 'mnd': 10, 'spd': 11},
-    {'fir': 163, 'cld': 169, 'wnd': 165, 'ntr': 166, 'mys': 167, 'spi': 69}
+    {'fir': 163, 'cld': 169, 'wnd': 165, 'ntr': 166, 'mys': 167, 'spi': 69},
+    144
   ),
   Character(
     'Renko',
     {'hp': 13, 'sp': 11, 'atk': 4, 'def': 6, 'mag': 5, 'mnd': 7, 'spd': 9},
-    {'fir': 102, 'cld': 105, 'wnd': 100, 'ntr': 101, 'mys': 107, 'spi': 108}
+    {'fir': 102, 'cld': 105, 'wnd': 100, 'ntr': 101, 'mys': 107, 'spi': 108},
+    98
   ),
   Character(
     'Maribel',
     {'hp': 11, 'sp': 16, 'atk': 7, 'def': 5, 'mag': 11, 'mnd': 8, 'spd': 8},
-    {'fir': 78, 'cld': 132, 'wnd': 135, 'ntr': 132, 'mys': 65, 'spi': 156}
+    {'fir': 78, 'cld': 132, 'wnd': 135, 'ntr': 132, 'mys': 65, 'spi': 156},
+    103
   ),
   Character(
     'Utsuho',
     {'hp': 12, 'sp': 15, 'atk': 8, 'def': 8, 'mag': 14, 'mnd': 8, 'spd': 10},
-    {'fir': 282, 'cld': 54, 'wnd': 187, 'ntr': 76, 'mys': 186, 'spi': 61}
+    {'fir': 282, 'cld': 54, 'wnd': 187, 'ntr': 76, 'mys': 186, 'spi': 61},
+    130
   ),
   Character(
     'Kanako',
     {'hp': 13, 'sp': 16, 'atk': 8, 'def': 9, 'mag': 13, 'mnd': 9, 'spd': 8},
-    {'fir': 112, 'cld': 123, 'wnd': 238, 'ntr': 145, 'mys': 100, 'spi': 126}
+    {'fir': 112, 'cld': 123, 'wnd': 238, 'ntr': 145, 'mys': 100, 'spi': 126},
+    134
   ),
   Character(
     'Yuuka',
     {'hp': 14, 'sp': 14, 'atk': 11, 'def': 10, 'mag': 14, 'mnd': 7, 'spd': 8},
-    {'fir': 76, 'cld': 78, 'wnd': 142, 'ntr': 254, 'mys': 176, 'spi': 120}
+    {'fir': 76, 'cld': 78, 'wnd': 142, 'ntr': 254, 'mys': 176, 'spi': 120},
+    134
   ),
   Character(
     'Mystia',
     {'hp': 12, 'sp': 14, 'atk': 10, 'def': 6, 'mag': 4, 'mnd': 6, 'spd': 10},
-    {'fir': 90, 'cld': 91, 'wnd': 143, 'ntr': 127, 'mys': 76, 'spi': 88}
+    {'fir': 90, 'cld': 91, 'wnd': 143, 'ntr': 127, 'mys': 76, 'spi': 88},
+    85
   ),
   Character(
     'Keine',
     {'hp': 15, 'sp': 19, 'atk': 11, 'def': 8, 'mag': 7, 'mnd': 7, 'spd': 9},
-    {'fir': 133, 'cld': 133, 'wnd': 129, 'ntr': 131, 'mys': 140, 'spi': 139}
+    {'fir': 133, 'cld': 133, 'wnd': 129, 'ntr': 131, 'mys': 140, 'spi': 139},
+    106
   ),
   Character(
     'Shikieiki',
     {'hp': 15, 'sp': 15, 'atk': 14, 'def': 5, 'mag': 14, 'mnd': 10, 'spd': 7},
-    {'fir': 108, 'cld': 171, 'wnd': 105, 'ntr': 112, 'mys': 125, 'spi': 169}
+    {'fir': 108, 'cld': 171, 'wnd': 105, 'ntr': 112, 'mys': 125, 'spi': 169},
+    130
   ),
 ]
